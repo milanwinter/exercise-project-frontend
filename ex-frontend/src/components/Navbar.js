@@ -12,8 +12,9 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import { withRouter } from "react-router-dom"
 
-const drawerWidth = 240;
+const drawerWidth = 190;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,8 +39,32 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ClippedDrawer() {
+const NavBar = (props) => {
   const classes = useStyles();
+  const { history } = props
+
+  const itemsList = [
+      {
+          text: "My Workouts",
+          onClick: () => history.push('/workouts')
+      },
+      {
+          text: "Exercises",
+          onClick: () => history.push('/exercises')
+      }
+
+  ]
+
+  const secondList = [
+      {
+          text: "Profile",
+          onClick: () => history.push('/profile')
+      },
+      {
+          text: "Logout",
+          onClick: () => history.push('/logout')
+      }
+  ]
 
   return (
     <div className={classes.root}>
@@ -61,23 +86,33 @@ export default function ClippedDrawer() {
         <Toolbar />
         <div className={classes.drawerContainer}>
           <List>
-            {['My Workouts', 'Starred Exerises', 'All Exercises', 'Public Workouts'].map((text, index) => (
-              <ListItem button key={text}>
+            {itemsList.map((item, index) => {
+                const { text, onClick }  = item;
+                return (
+               <ListItem button key={text} onClick={onClick}>
                 <ListItemText primary={text} />
-              </ListItem>
-            ))}
+              </ListItem> 
+                )
+            }
+              
+            )}
           </List>
           <List> </List>
           <Divider />
           <List>
-            {['Profile','Logout'].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemText primary={text} />
+            {secondList.map((item, index) => {
+                const {text, onClick} = item;
+                return (
+                <ListItem button key={text} onClick = {onClick}>
+                <ListItemText primary={text} onClick={onClick} />
               </ListItem>
-            ))}
+                )
+              }
+            )}
           </List>
         </div>
       </Drawer>
     </div>
   );
 }
+export default withRouter(NavBar);
